@@ -1,5 +1,5 @@
+import create from "zustand";
 import { nanoid } from "nanoid";
-import { create } from "zustand";
 
 const getLocalStorage = (key) => JSON.parse(window.localStorage.getItem(key));
 const setLocalStorage = (key, value) =>
