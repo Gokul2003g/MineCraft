@@ -2,10 +2,10 @@
 - [x] Sky
 - [x] Textures and images
 - [x] Ground
-- [] Keyboard Inputs
-- [] Player
-- [] First person view
-- [] Gravity
+- [x] Keyboard Inputs
+- [x] Player
+- [x] First person view
+- [x] Gravity
 - [] Movement
 - [] State management
 - [] Cubes

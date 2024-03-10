@@ -3,8 +3,15 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import { Vector3 } from "three";
 import { useEffect } from "react";
+import { useKeyboard } from "../hooks/useKeyboard";
 
 export const Player = () => {
+  const { moveForward, moveBackward, moveRight, moveLeft, jump } =
+    useKeyboard();
+
+  const SPEED = 4;
+  const JUMP_VELOCITY = 4;
+
   const { camera } = useThree();
   const [ref, api] = useSphere(() => ({
     mass: 1,
@@ -30,7 +37,31 @@ export const Player = () => {
     camera.position.copy(
       new Vector3(pos.current[0], pos.current[1], pos.current[2]),
     );
-    api.velocity.set(0, 0, 0);
+
+    const directions = new Vector3();
+
+    const frontVector = new Vector3(
+      0,
+      0,
+      (moveBackward ? 1 : 0) - (moveForward ? 1 : 0),
+    );
+    const sideVector = new Vector3(
+      (moveLeft ? 1 : 0) - (moveRight ? 1 : 0),
+      0,
+      0,
+    );
+
+    directions
+      .subVectors(frontVector, sideVector)
+      .normalize()
+      .multiplyScalar(SPEED)
+      .applyEuler(camera.rotation);
+
+    api.velocity.set(directions.x, vel.current[1], directions.z);
+
+    if (jump && Math.abs(vel.current[1].toFixed(2)) < 0.05) {
+      api.velocity.set(vel.current[0], JUMP_VELOCITY, vel.current[2]);
+    }
   });
 
   return <mesh ref={ref}></mesh>;
